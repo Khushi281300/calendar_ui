@@ -1,6 +1,11 @@
+'use client';
+
 import React from 'react';
+import { useCalendar } from '@/hooks/useCalendar';
+import { CalendarGrid } from '@/components/calendar/CalendarGrid';
 
 export default function CalendarPage() {
+  const calendarState = useCalendar();
   return (
     <main className="min-h-screen bg-gray-50 flex items-center justify-center p-4 md:p-8 antialiased">
       <div className="w-full max-w-6xl bg-white rounded-3xl shadow-xl overflow-hidden min-h-[800px] border border-gray-100 grid grid-cols-1 md:grid-cols-[2fr_3fr] lg:grid-cols-[3fr_5fr]">
@@ -14,13 +19,10 @@ export default function CalendarPage() {
           </div>
         </section>
 
-        {/* Right Panel: Calendar & Notes */}
+      {/* Right Panel: Calendar & Notes */}
         <section className="p-6 md:p-10 flex flex-col flex-1 h-full">
           <div className="flex-1">
-            {/* Calendar Grid Placholder */}
-             <div className="h-[400px] border-2 border-dashed border-gray-200 rounded-xl flex items-center justify-center text-gray-400">
-               Calendar Grid Component Will Go Here
-             </div>
+             <CalendarGrid currentMonth={calendarState.currentMonth} />
           </div>
           
           <div className="mt-8 pt-8 border-t border-gray-100">
