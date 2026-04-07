@@ -22,7 +22,12 @@ export default function CalendarPage() {
       {/* Right Panel: Calendar & Notes */}
         <section className="p-6 md:p-10 flex flex-col flex-1 h-full">
           <div className="flex-1">
-             <CalendarGrid currentMonth={calendarState.currentMonth} />
+             <CalendarGrid 
+               currentMonth={calendarState.currentMonth} 
+               selectedStart={calendarState.selectedStart}
+               selectedEnd={calendarState.selectedEnd}
+               onSelectDate={calendarState.selectDate}
+             />
           </div>
           
           <div className="mt-8 pt-8 border-t border-gray-100">

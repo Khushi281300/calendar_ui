@@ -4,11 +4,14 @@ import { DayCell } from './DayCell';
 
 interface CalendarGridProps {
   currentMonth: Date;
+  selectedStart: Date | null;
+  selectedEnd: Date | null;
+  onSelectDate: (date: Date) => void;
 }
 
 const WEEKDAYS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
 
-export function CalendarGrid({ currentMonth }: CalendarGridProps) {
+export function CalendarGrid({ currentMonth, selectedStart, selectedEnd, onSelectDate }: CalendarGridProps) {
   const firstDay = startOfMonth(currentMonth);
   const lastDay = endOfMonth(currentMonth);
   
@@ -35,6 +38,9 @@ export function CalendarGrid({ currentMonth }: CalendarGridProps) {
             key={day.toString()} 
             day={day} 
             currentMonth={currentMonth} 
+            selectedStart={selectedStart}
+            selectedEnd={selectedEnd}
+            onClick={() => onSelectDate(day)}
           />
         ))}
       </div>
