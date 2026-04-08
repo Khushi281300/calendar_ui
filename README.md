@@ -1,6 +1,4 @@
-# Living Nature Calendar
-
-![Project Screenshot](public/screenshot.png)
+# Calendar
 
 **[Live Demo](https://calendar-ui-eight.vercel.app/)**
 
@@ -50,5 +48,4 @@ npm run build
 npm run dev
 ```
 
----
-*Technical Assessment Submission: Focus on UI Engineering, State Management, and Performance Latency.*
+
