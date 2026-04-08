@@ -1,6 +1,6 @@
-import React from 'react';
 import { startOfMonth, endOfMonth, startOfWeek, endOfWeek, eachDayOfInterval } from 'date-fns';
 import { DayCell } from './DayCell';
+import { getHoliday } from '@/lib/holidays';
 
 interface CalendarGridProps {
   currentMonth: Date;
@@ -30,7 +30,10 @@ export function CalendarGrid({
   const days = eachDayOfInterval({ start: startDate, end: endDate });
 
   return (
-    <div className="w-full animate-in fade-in duration-1000 slide-in-from-bottom-2">
+    <div 
+      key={currentMonth.toISOString()} 
+      className="w-full animate-month-change"
+    >
       {/* Grid Header with Navigation */}
       <div className="flex justify-between items-center mb-12 px-2">
         <h2 className="text-2xl font-semibold text-slate-800 tracking-tight">
@@ -59,16 +62,27 @@ export function CalendarGrid({
       </div>
 
       {/* Weekday headers */}
-      <div className="grid grid-cols-7 mb-8 px-2">
+      <div 
+        role="row" 
+        className="grid grid-cols-7 mb-8 px-2"
+      >
         {WEEKDAYS.map((day) => (
-          <div key={day} className="text-center text-[11px] font-bold uppercase tracking-[0.15em] text-slate-400/80">
-            {day}
+          <div 
+            key={day} 
+            role="columnheader" 
+            aria-label={day}
+            className="text-center text-[11px] font-bold uppercase tracking-[0.15em] text-slate-400/80"
+          >
+            {day.substring(0, 3)}
           </div>
         ))}
       </div>
 
       {/* Calendar Grid */}
-      <div className="grid grid-cols-7 gap-y-3 gap-x-1 place-items-center">
+      <div 
+        role="row" 
+        className="grid grid-cols-7 gap-y-3 gap-x-1 place-items-center"
+      >
         {days.map((day) => (
           <DayCell 
             key={day.toString()} 
@@ -76,6 +90,7 @@ export function CalendarGrid({
             currentMonth={currentMonth} 
             selectedStart={selectedStart}
             selectedEnd={selectedEnd}
+            holidayName={getHoliday(day)}
             onClick={() => onSelectDate(day)}
           />
         ))}

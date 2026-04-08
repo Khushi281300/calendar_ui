@@ -1,9 +1,0 @@
-fastapi
-uvicorn
-chromadb
-langchain
-llama-index
-openai-whisper
-python-multipart
-pytest
-pypdf
