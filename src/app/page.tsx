@@ -34,20 +34,9 @@ export default function CalendarPage() {
         </div>
 
         {/* Bottom Section: Split Content */}
-        <section className="flex-1 flex flex-col md:flex-row min-h-0 overflow-visible md:overflow-hidden">
-          {/* Left: Notes Panel (Lined Notepad style) */}
-          <div className="w-full md:w-[35%] h-auto md:h-full border-b md:border-b-0 md:border-r border-slate-100 p-4 md:p-6 shrink-0 md:shrink">
-             <NotesPanel 
-                selectedStart={calendarState.selectedStart}
-                selectedEnd={calendarState.selectedEnd}
-                getNote={notesState.getNote}
-                saveNote={notesState.saveNote}
-                onClearSelection={calendarState.clearSelection}
-             />
-          </div>
-
-          {/* Right: Calendar Grid */}
-          <div className="flex-1 h-auto md:h-full p-4 md:p-6 overflow-visible md:overflow-y-auto scrollbar-hide">
+        <section className="flex-1 flex flex-col md:flex-row-reverse min-h-0 overflow-visible md:overflow-hidden">
+          {/* Right: Calendar Grid (First in mobile, Right on desktop) */}
+          <div className="flex-1 h-auto md:h-full p-4 md:p-6 overflow-visible md:overflow-y-auto scrollbar-hide border-b md:border-b-0 border-slate-100">
              <CalendarGrid 
                currentMonth={calendarState.currentMonth} 
                selectedStart={calendarState.selectedStart}
@@ -58,6 +47,17 @@ export default function CalendarPage() {
                onGoToToday={calendarState.goToToday}
                onSetMonth={calendarState.setMonth}
                onSetYear={calendarState.setYear}
+             />
+          </div>
+
+          {/* Left: Notes Panel (Second in mobile, Left on desktop) */}
+          <div className="w-full md:w-[35%] h-auto md:h-full md:border-r border-slate-100 p-4 md:p-6 shrink-0 md:shrink">
+             <NotesPanel 
+                selectedStart={calendarState.selectedStart}
+                selectedEnd={calendarState.selectedEnd}
+                getNote={notesState.getNote}
+                saveNote={notesState.saveNote}
+                onClearSelection={calendarState.clearSelection}
              />
           </div>
         </section>
