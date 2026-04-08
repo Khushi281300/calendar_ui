@@ -4,22 +4,19 @@ import React from 'react';
 import { useCalendar } from '@/hooks/useCalendar';
 import { useNotes } from '@/hooks/useNotes';
 import { CalendarGrid } from '@/components/calendar/CalendarGrid';
+import { NotesPanel } from '@/components/calendar/NotesPanel';
+import { HeroPanel } from '@/components/calendar/HeroPanel';
 
 export default function CalendarPage() {
   const calendarState = useCalendar();
   const notesState = useNotes();
+
   return (
-    <main className="min-h-screen bg-gray-50 flex items-center justify-center p-4 md:p-8 antialiased">
-      <div className="w-full max-w-6xl bg-white rounded-3xl shadow-xl overflow-hidden min-h-[800px] border border-gray-100 grid grid-cols-1 md:grid-cols-[2fr_3fr] lg:grid-cols-[3fr_5fr]">
+    <main className="min-h-screen bg-[#f8fafc] flex items-center justify-center p-4 md:p-8 antialiased selection:bg-blue-100">
+      <div className="w-full max-w-7xl bg-white/80 backdrop-blur-xl rounded-[2.5rem] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)] overflow-hidden min-h-[850px] border border-white/20 grid grid-cols-1 md:grid-cols-[1.5fr_2.5fr] lg:grid-cols-[1.8fr_3.2fr]">
         
-        {/* Left Panel: Hero Image & Month Display */}
-        <section className="bg-gray-100 flex flex-col justify-end p-8 border-r border-gray-100 relative">
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10" />
-          <div className="relative z-20 text-white">
-            <h1 className="text-4xl md:text-5xl font-light tracking-tight pb-2">April</h1>
-            <p className="text-lg opacity-80 font-medium">2026</p>
-          </div>
-        </section>
+        {/* Left Panel: Seasonal Hero Section */}
+        <HeroPanel currentMonth={calendarState.currentMonth} />
 
       {/* Right Panel: Calendar & Notes */}
         <section className="p-6 md:p-10 flex flex-col flex-1 h-full">
@@ -29,14 +26,18 @@ export default function CalendarPage() {
                selectedStart={calendarState.selectedStart}
                selectedEnd={calendarState.selectedEnd}
                onSelectDate={calendarState.selectDate}
+               onPrevMonth={calendarState.prevMonth}
+               onNextMonth={calendarState.nextMonth}
              />
           </div>
           
-          <div className="mt-8 pt-8 border-t border-gray-100">
-             {/* Notes Panel Placeholder */}
-             <div className="h-[150px] border-2 border-dashed border-gray-200 rounded-xl flex items-center justify-center text-gray-400">
-               Notes Panel Component Will Go Here
-             </div>
+          <div className="mt-8 h-[200px]">
+             <NotesPanel 
+                selectedStart={calendarState.selectedStart}
+                selectedEnd={calendarState.selectedEnd}
+                getNote={notesState.getNote}
+                saveNote={notesState.saveNote}
+             />
           </div>
         </section>
 
