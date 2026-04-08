@@ -2,6 +2,8 @@
 
 ![Project Screenshot](public/screenshot.png)
 
+**[Live Demo](https://calendar-ui-eight.vercel.app/)**
+
 A performance-optimized React/Next.js implementation of a dynamic wall calendar, architecturalized as a decoupled, state-driven dashboard. This project focuses on high-frequency UI updates, atomic state persistence, and hardware-accelerated rendering.
 
 ## Architectural Overview
