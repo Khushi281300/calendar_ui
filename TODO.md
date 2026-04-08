@@ -3,13 +3,13 @@
 We just finished **Commit 5** (handling date range selection logic in the grid).
 
 ## Goal for Tomorrow:
-Start on **Commit 10**: `feat: polish hover states, pill shapes, and shadows on the day cells`
+Start on **Commit 11**: `feat: add smooth month transition animations`
 
 ## Remaining Commits:
 ### Stage 4: Aesthetics
 - [x] **Commit 8**: Set up responsive CSS grid (desktop side-by-side vs mobile stack).
 - [x] **Commit 9**: Build `HeroPanel.tsx` with dynamic Unsplash images that change based on the month.
-- [ ] **Commit 10**: Polish hover states, pill shapes, and shadows on the day cells.
+- [x] **Commit 10**: Polish hover states, pill shapes, and shadows on the day cells.
 
 ### Stage 5: Polish & Extras
 - [ ] **Commit 11**: Add smooth month transition animations.
