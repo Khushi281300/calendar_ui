@@ -2,70 +2,66 @@
 
 import React from 'react';
 import { format, getMonth } from 'date-fns';
+import { Flower, Leaf } from 'lucide-react';
 
 interface HeroPanelProps {
   currentMonth: Date;
 }
 
-const MONTH_METADATA: Record<number, { keyword: string; color: string }> = {
-  0: { keyword: 'snowy mountain', color: 'bg-blue-900' }, // Jan
-  1: { keyword: 'winter forest', color: 'bg-slate-800' }, // Feb
-  2: { keyword: 'spring park', color: 'bg-emerald-900' }, // Mar
-  3: { keyword: 'cherry blossoms', color: 'bg-rose-900' }, // Apr
-  4: { keyword: 'flower garden', color: 'bg-pink-900' }, // May
-  5: { keyword: 'summer beach', color: 'bg-cyan-900' }, // Jun
-  6: { keyword: 'tropical resort', color: 'bg-teal-900' }, // Jul
-  7: { keyword: 'sunset ocean', color: 'bg-amber-900' }, // Aug
-  8: { keyword: 'autumn leaves', color: 'bg-orange-900' }, // Sep
-  9: { keyword: 'fall forest', color: 'bg-red-900' }, // Oct
-  10: { keyword: 'misty morning', color: 'bg-indigo-900' }, // Nov
-  11: { keyword: 'cozy cabin snow', color: 'bg-blue-950' }, // Dec
-};
-
 export function HeroPanel({ currentMonth }: HeroPanelProps) {
   const monthIndex = getMonth(currentMonth);
-  const { color } = MONTH_METADATA[monthIndex];
-  
   const monthName = format(currentMonth, 'MMMM');
   const yearName = format(currentMonth, 'yyyy');
   
-  // Mapping some specific beautiful Unsplash IDs for a curated feel
   const curatedImages: Record<number, string> = {
-    0: '1519681393784-d120267933ba', // Jan - Snowy Mountain
-    1: '1483921020237-2ff51e8e4b22', // Feb - Winter
-    2: '1462270622445-5b17ccd7dae3', // Mar - Spring
-    3: '1522748906645-95d8adfd52c7', // Apr - Cherry Blossoms
-    4: '1470770841072-f978cf4d019e', // May - Meadow
-    5: '1507525428034-b723cf961d3e', // Jun - Beach
-    6: '1500382017468-9049fed747ef', // Jul - Sun
-    7: '1470252649358-96f3c5783226', // Aug - Sunrise
-    8: '1441974231531-c6227db76b6e', // Sep - Forest
-    9: '1504198453319-5ce911bafcde', // Oct - Red Trees
-    10: '1486406146926-c627a92ad1ab', // Nov - Foggy City (or better, nature)
-    11: '1507151226894-49f394547ce4', // Dec - Winter night
+    0: '1519681393784-d120267933ba', 1: '1483921020237-2ff51e8e4b22', 
+    2: '1462270622445-5b17ccd7dae3', 3: '1522748906645-95d8adfd52c7',
+    4: '1470770841072-f978cf4d019e', 5: '1507525428034-b723cf961d3e',
+    6: '1500382017468-9049fed747ef', 7: '1470252649358-96f3c5783226',
+    8: '1441974231531-c6227db76b6e', 9: '1504198453319-5ce911bafcde',
+    10: '1486406146926-c627a92ad1ab', 11: '1507151226894-49f394547ce4'
   };
   
   const photoId = curatedImages[monthIndex] || curatedImages[0];
-  const curatedUrl = `https://images.unsplash.com/photo-${photoId}?auto=format&fit=crop&q=80&w=2000`;
 
   return (
-    <section className={`flex flex-col justify-end p-10 md:p-14 border-r border-slate-100 relative overflow-hidden h-[300px] md:h-auto transition-colors duration-1000 ${color}`}>
-      <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/40 to-transparent z-10" />
+    <section className="relative h-[350px] md:h-auto overflow-hidden group border-r border-emerald-50">
+      {/* 1. Animated Mesh Flow Base */}
+      <div className="absolute inset-0 bg-gradient-to-br from-emerald-50 via-sage-100 to-teal-50 animate-mesh-flow opacity-60 z-0" />
       
-      {/* Background Image with cross-fade transition */}
+      {/* 2. Panoramic Unsplash Backdrop */}
       <div 
-        key={curatedUrl}
-        className="absolute inset-0 bg-cover bg-center transition-transform duration-[15000ms] hover:scale-110 animate-in fade-in zoom-in-105 duration-1000"
-        style={{ backgroundImage: `url('${curatedUrl}')` }}
+        key={photoId}
+        className="absolute inset-0 bg-cover bg-center transition-all duration-[20000ms] scale-110 group-hover:scale-100 opacity-80 mix-blend-multiply z-10"
+        style={{ backgroundImage: `url(https://images.unsplash.com/photo-${photoId}?auto=format&fit=crop&q=80&w=1200)` }}
       />
+      
+      {/* 3. Deep Green Vignette */}
+      <div className="absolute inset-0 bg-gradient-to-t from-emerald-900/10 via-transparent to-transparent z-20" />
 
-      <div className="relative z-20 text-white animate-in fade-in slide-in-from-bottom-6 duration-700 delay-150">
-        <h1 className="text-5xl md:text-8xl font-extralight tracking-tighter pb-3 bg-clip-text text-transparent bg-gradient-to-br from-white to-white/60 drop-shadow-sm">
-          {monthName}
-        </h1>
-        <p className="text-xl md:text-2xl opacity-60 font-light tracking-[0.3em] uppercase drop-shadow-sm">
-          {yearName}
-        </p>
+      {/* 4. Local Drifting Particles (Hero Depth) */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-30">
+        <Leaf className="absolute top-10 right-20 animate-float text-emerald-400/20 fill-emerald-200/10 w-24 h-24 rotate-45" />
+        <Flower className="absolute bottom-40 left-10 animate-float-delayed text-rose-300/20 fill-rose-100/10 w-16 h-16" />
+        <Leaf className="absolute top-1/2 left-1/3 animate-pulse text-lime-400/10 w-12 h-12 -rotate-12" />
+      </div>
+
+      {/* 5. Breathing Hero Title */}
+      <div className="absolute inset-0 p-8 md:p-12 flex flex-col justify-end z-40">
+        <div className="w-full bg-white/10 backdrop-blur-3xl border border-white/40 p-10 rounded-[4rem] shadow-[0_25px_50px_-12px_rgba(16,185,129,0.1)] animate-breathing transform transition-all duration-1000 group-hover:scale-[1.01] overflow-hidden relative">
+          <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/5 to-transparent pointer-events-none" />
+          
+          <div className="space-y-0 text-center md:text-left relative z-10">
+            <h1 className="text-emerald-800 text-5xl md:text-6xl lg:text-7xl font-black tracking-tight leading-[0.85] truncate drop-shadow-sm transition-all group-hover:text-emerald-900">
+              {monthName}
+            </h1>
+            <p className="text-emerald-600/60 text-xl md:text-2xl font-black tracking-[0.2em] uppercase drop-shadow-sm mt-3 md:mt-4 flex items-center justify-center md:justify-start gap-3">
+              <span className="w-8 h-[2px] bg-emerald-200" />
+              {yearName}
+              <span className="w-8 h-[2px] bg-emerald-200" />
+            </p>
+          </div>
+        </div>
       </div>
     </section>
   );

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 export type NoteStore = Record<string, string>;
 
@@ -19,26 +19,32 @@ export function useNotes() {
     }
   }, []);
 
-  // Save a note for a specific date key
+  // Save a note for a specific date key (Stable Atomic version)
   const saveNote = (dateKey: string, content: string) => {
-    const updatedNotes = {
-      ...notes,
-      [dateKey]: content,
-    };
+    setNotes((prev) => {
+      const updated = {
+        ...prev,
+        [dateKey]: content,
+      };
 
-    // Remove key if content is empty to keep store clean
-    if (!content.trim()) {
-      delete updatedNotes[dateKey];
-    }
+      // Remove key if content is empty to keep store clean
+      if (!content.trim()) {
+        delete updated[dateKey];
+      }
 
-    setNotes(updatedNotes);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedNotes));
+      return updated;
+    });
   };
 
-  // Helper to get a note for a specific date key
-  const getNote = (dateKey: string) => {
+  // Sync with localStorage whenever notes change
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
+  }, [notes]);
+
+  // Helper to get a note for a specific date key (Memoized for stability)
+  const getNote = useCallback((dateKey: string) => {
     return notes[dateKey] || '';
-  };
+  }, [notes]);
 
   return {
     notes,

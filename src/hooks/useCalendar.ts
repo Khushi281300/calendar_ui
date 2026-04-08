@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { addMonths, subMonths } from 'date-fns';
+import { addMonths, subMonths, isSameDay } from 'date-fns';
 
 export function useCalendar(initialDate: Date = new Date()) {
   const [currentMonth, setCurrentMonth] = useState(initialDate);
@@ -8,8 +8,34 @@ export function useCalendar(initialDate: Date = new Date()) {
 
   const nextMonth = () => setCurrentMonth((prev) => addMonths(prev, 1));
   const prevMonth = () => setCurrentMonth((prev) => subMonths(prev, 1));
+  const goToToday = () => setCurrentMonth(new Date());
+  
+  const setMonth = (month: number) => {
+    const next = new Date(currentMonth);
+    next.setMonth(month);
+    setCurrentMonth(next);
+  };
+  
+  const setYear = (year: number) => {
+    const next = new Date(currentMonth);
+    next.setFullYear(year);
+    setCurrentMonth(next);
+  };
 
   const selectDate = (date: Date) => {
+    // If the same date is clicked and no range is active, deselect it
+    if (selectedStart && !selectedEnd && isSameDay(date, selectedStart)) {
+      setSelectedStart(null);
+      return;
+    }
+
+    // Toggle behavior: if both are selected and we click one, clear all
+    if (selectedStart && selectedEnd && (isSameDay(date, selectedStart) || isSameDay(date, selectedEnd))) {
+      setSelectedStart(null);
+      setSelectedEnd(null);
+      return;
+    }
+
     // If nothing is selected, or both are already selected, start a new range
     if (!selectedStart || (selectedStart && selectedEnd)) {
       setSelectedStart(date);
@@ -37,6 +63,9 @@ export function useCalendar(initialDate: Date = new Date()) {
     selectedEnd,
     nextMonth,
     prevMonth,
+    goToToday,
+    setMonth,
+    setYear,
     selectDate,
     clearSelection,
   };

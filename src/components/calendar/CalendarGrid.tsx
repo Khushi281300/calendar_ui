@@ -1,6 +1,15 @@
 import { startOfMonth, endOfMonth, startOfWeek, endOfWeek, eachDayOfInterval } from 'date-fns';
 import { DayCell } from './DayCell';
 import { getHoliday } from '@/lib/holidays';
+import { ChevronLeft, ChevronRight, ChevronDown, Sparkles } from 'lucide-react';
+import React, { useState } from 'react';
+
+const WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+const MONTHS = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December'
+];
+const YEARS = Array.from({ length: 16 }, (_, i) => 2020 + i);
 
 interface CalendarGridProps {
   currentMonth: Date;
@@ -9,9 +18,10 @@ interface CalendarGridProps {
   onSelectDate: (date: Date) => void;
   onPrevMonth: () => void;
   onNextMonth: () => void;
+  onGoToToday: () => void;
+  onSetMonth: (month: number) => void;
+  onSetYear: (year: number) => void;
 }
-
-const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 export function CalendarGrid({ 
   currentMonth, 
@@ -19,8 +29,14 @@ export function CalendarGrid({
   selectedEnd, 
   onSelectDate,
   onPrevMonth,
-  onNextMonth
+  onNextMonth,
+  onGoToToday,
+  onSetMonth,
+  onSetYear
 }: CalendarGridProps) {
+  const [showMonthPicker, setShowMonthPicker] = useState(false);
+  const [showYearPicker, setShowYearPicker] = useState(false);
+
   const firstDay = startOfMonth(currentMonth);
   const lastDay = endOfMonth(currentMonth);
   
@@ -34,30 +50,87 @@ export function CalendarGrid({
       key={currentMonth.toISOString()} 
       className="w-full animate-month-change"
     >
-      {/* Grid Header with Navigation */}
-      <div className="flex justify-between items-center mb-12 px-2">
-        <h2 className="text-2xl font-semibold text-slate-800 tracking-tight">
-          Select Dates
-        </h2>
-        <div className="flex gap-3">
-           <button 
-             onClick={onPrevMonth}
-             className="p-3 rounded-2xl hover:bg-slate-50 text-slate-400 hover:text-slate-900 transition-all border border-slate-100 hover:border-slate-200 hover:shadow-sm active:scale-90"
-             aria-label="Previous Month"
-           >
-             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-             </svg>
-           </button>
-           <button 
-             onClick={onNextMonth}
-             className="p-3 rounded-2xl hover:bg-slate-50 text-slate-400 hover:text-slate-900 transition-all border border-slate-100 hover:border-slate-200 hover:shadow-sm active:scale-90"
-             aria-label="Next Month"
-           >
-             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-             </svg>
-           </button>
+      {/* Animated Nature Glass Header */}
+      <div className="relative z-50 mb-12 px-2">
+        <div className="bg-emerald-50/20 backdrop-blur-3xl border border-white/40 p-8 rounded-[4rem] shadow-[0_20px_50px_-12px_rgba(16,185,129,0.1)] flex flex-col sm:flex-row justify-between items-center gap-8 animate-breathing">
+          <div className="flex items-center gap-6">
+            {/* Custom Nature Month Picker */}
+            <div className="relative">
+              <button 
+                onClick={() => { setShowMonthPicker(!showMonthPicker); setShowYearPicker(false); }}
+                className="flex items-center gap-2 text-4xl font-black text-emerald-800 tracking-tight hover:text-emerald-700 transition-all group"
+              >
+                {MONTHS[currentMonth.getMonth()]}
+                <ChevronDown className={`w-6 h-6 text-emerald-200 group-hover:text-emerald-300 transition-transform ${showMonthPicker ? 'rotate-180' : ''}`} />
+              </button>
+              
+              {showMonthPicker && (
+                <div className="absolute top-full left-0 mt-4 w-64 bg-white/30 backdrop-blur-3xl border border-white/40 rounded-[2.5rem] shadow-2xl p-4 grid grid-cols-2 gap-2 animate-in fade-in zoom-in-95 duration-200 z-[100]">
+                  {MONTHS.map((month, idx) => (
+                    <button
+                      key={month}
+                      onClick={() => { onSetMonth(idx); setShowMonthPicker(false); }}
+                      className={`px-4 py-3 rounded-2xl text-[13px] font-black transition-all ${currentMonth.getMonth() === idx ? 'bg-rose-400/80 text-white shadow-lg shadow-rose-200' : 'hover:bg-rose-50/50 text-rose-400'}`}
+                    >
+                      {month.substring(0, 3)}
+                    </button>
+                   ))}
+                </div>
+              )}
+            </div>
+
+            {/* Custom Kawaii Year Picker */}
+            <div className="relative">
+              <button 
+                onClick={() => { setShowYearPicker(!showYearPicker); setShowMonthPicker(false); }}
+                className="flex items-center gap-2 text-4xl font-black text-orange-200 tracking-tight hover:text-orange-300 transition-all group"
+              >
+                {currentMonth.getFullYear()}
+                <ChevronDown className={`w-6 h-6 text-orange-100 group-hover:text-orange-200 transition-transform ${showYearPicker ? 'rotate-180' : ''}`} />
+              </button>
+
+              {showYearPicker && (
+                <div className="absolute top-full left-0 mt-4 w-48 bg-white/30 backdrop-blur-3xl border border-white/40 rounded-[2.5rem] shadow-2xl p-4 max-h-80 overflow-y-auto scrollbar-hide animate-in fade-in zoom-in-95 duration-200 z-[100]">
+                  {YEARS.map((year) => (
+                    <button
+                      key={year}
+                      onClick={() => { onSetYear(year); setShowYearPicker(false); }}
+                      className={`w-full px-4 py-3 rounded-2xl text-[13px] font-black transition-all mb-1 ${currentMonth.getFullYear() === year ? 'bg-orange-300/80 text-white shadow-lg shadow-orange-100' : 'hover:bg-orange-50/50 text-orange-300'}`}
+                    >
+                      {year}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="flex items-center gap-4 bg-white/10 backdrop-blur-md p-2 rounded-full border border-white/20 shadow-inner">
+             <button 
+               onClick={onGoToToday}
+               className="flex items-center gap-2 px-8 py-3.5 rounded-full text-[12px] font-black tracking-widest text-white bg-rose-400/80 shadow-[0_12px_24px_-8px_rgba(244,114,182,0.3)] hover:scale-105 active:scale-95 transition-all"
+             >
+               <Sparkles className="w-4 h-4 fill-white/20" />
+               TODAY
+             </button>
+             
+             <div className="flex gap-2">
+               <button 
+                 onClick={onPrevMonth}
+                 className="p-3.5 rounded-full bg-white/40 hover:bg-rose-50/50 text-rose-300 hover:text-rose-500 transition-all shadow-sm active:scale-90"
+                 aria-label="Previous Month"
+               >
+                 <ChevronLeft className="w-6 h-6" />
+               </button>
+               <button 
+                 onClick={onNextMonth}
+                 className="p-3.5 rounded-full bg-white/40 hover:bg-rose-50/50 text-rose-300 hover:text-rose-500 transition-all shadow-sm active:scale-90"
+                 aria-label="Next Month"
+               >
+                 <ChevronRight className="w-6 h-6" />
+               </button>
+             </div>
+          </div>
         </div>
       </div>
 

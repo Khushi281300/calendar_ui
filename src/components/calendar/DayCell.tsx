@@ -1,6 +1,7 @@
 import React from 'react';
 import { format, isSameMonth, isToday, isSameDay, isWithinInterval } from 'date-fns';
 import { cn } from '@/lib/utils';
+import { Sparkle, Heart } from 'lucide-react';
 
 export interface DayCellProps {
   day: Date;
@@ -42,40 +43,40 @@ export function DayCell({ day, currentMonth, selectedStart, selectedEnd, holiday
         isCurrentMonth && "text-slate-600",
         
         // Holiday styling
-        isCurrentMonth && holidayName && !isStart && !isEnd && "text-rose-500",
+        isCurrentMonth && holidayName && !isStart && !isEnd && "text-rose-600 font-black",
         
         // Base hover
-        isCurrentMonth && !isStart && !isEnd && "hover:bg-slate-100 rounded-2xl",
+        isCurrentMonth && !isStart && !isEnd && "hover:bg-rose-50 hover:scale-125 active:scale-95 rounded-full",
         
         // In-range background
-        inRange && "bg-blue-50/70 text-blue-600",
+        inRange && "bg-rose-50/80 text-rose-500 font-black",
         
         // Range start/end background connectors
-        isRangeStart && "after:absolute after:right-0 after:h-full after:w-1/2 after:bg-blue-50/70 after:-z-10",
-        isRangeEnd && "after:absolute after:left-0 after:h-full after:w-1/2 after:bg-blue-50/70 after:-z-10",
+        isRangeStart && "after:absolute after:right-0 after:h-[60%] after:w-1/2 after:bg-rose-50/80 after:-z-10",
+        isRangeEnd && "after:absolute after:left-0 after:h-[60%] after:w-1/2 after:bg-rose-50/80 after:-z-10",
         
-        // Selected pill
-        (isStart || isEnd) && "bg-blue-600 text-white rounded-2xl shadow-[0_4px_12px_rgba(37,99,235,0.3),0_8px_24px_rgba(37,99,235,0.2)] z-10 scale-105",
-        
-        // Indicators container (Today & Holiday)
-        "before:content-[''] before:absolute before:bottom-2 before:left-1/2 before:-translate-x-1/2 before:rounded-full before:transition-all"
+        // Selected pill (Translucent Kawaii)
+        (isStart || isEnd) && "bg-rose-400/80 text-white rounded-full shadow-[0_15px_30px_-5px_rgba(244,114,182,0.3)] z-10 scale-110 ring-4 ring-white/40 backdrop-blur-md animate-pulse-slow",
       )}>
-      {/* Specific indicator dots */}
+      
+      {/* Today Indicator (Sparkle SVG) */}
       {isCurrentDay && !isStart && !isEnd && (
-        <span className="absolute bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 bg-blue-600 rounded-full" />
+        <div className="absolute -top-1 -right-1 z-20 animate-bounce-slow">
+          <Sparkle className="w-4 h-4 text-rose-300 fill-rose-100/50" />
+        </div>
       )}
+
+      {/* Holiday Indicator (Heart SVG) */}
       {holidayName && !isStart && !isEnd && (
-        <span className={cn(
-          "absolute bottom-2 left-1/2 translate-x-1 w-1 h-1 rounded-full animate-pulse",
-          isCurrentDay ? "translate-x-1" : "-translate-x-1/2",
-          "bg-rose-500"
-        )} />
-      )}
-      {holidayName && (isStart || isEnd) && (
-        <span className="absolute top-1 right-1 w-1.5 h-1.5 bg-rose-200 rounded-full border border-white" />
+        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 z-20 animate-pulse">
+          <Heart className="w-3 h-3 text-orange-300 fill-orange-50/50" />
+        </div>
       )}
       
-      <span className="relative z-10">{format(day, 'd')}</span>
+      <span className={cn(
+        "relative z-10 transition-transform duration-300",
+        isStart || isEnd ? "text-xl font-black" : "text-lg font-black text-slate-700"
+      )}>{format(day, 'd')}</span>
     </div>
   );
 }
