@@ -1,70 +1,52 @@
-# Living Nature Calendar: Frontend Engineering Challenge
+# Living Nature Calendar
 
-This repository contains my submission for the Frontend Engineering Challenge. The project is a high-fidelity, interactive React/Next.js calendar component that translates the traditional "wall calendar" aesthetic into a modern, performance-oriented digital experience.
+![Project Screenshot](public/screenshot.png)
 
-## Design Philosophy
+A performance-optimized React/Next.js implementation of a dynamic wall calendar, architecturalized as a decoupled, state-driven dashboard. This project focuses on high-frequency UI updates, atomic state persistence, and hardware-accelerated rendering.
 
-The challenge was to emulate a physical wall calendar while maintaining the functional requirements of a digital application. My approach centered on three pillars: **Visual Anchor**, **Living UI**, and **Tactile Feedback**.
+## Architectural Overview
 
-1.  **Visual Anchor**: Following the inspiration image, the layout uses a prominent hero section that serves as a seasonal anchor.
-2.  **Living UI**: To surpass static requirements, I implemented a global particle system and a CSS mesh-flow background to create an "organic" feel.
-3.  **Tactile Feedback**: Every interaction—from day selection to saving notes—is accompanied by subtle micro-animations (breathing effects, bloom hovers) to mimic the tactile quality of a physical product.
+### 1. State Management & Data Flow
+The system utilizes a custom hook architecture to separate business logic from the presentation layer:
+- **`useCalendar.ts`**: Handles complex date math and range validation using `date-fns`. It manages the cursor-based selection logic for both single-day and interval spans.
+- **`useNotes.ts`**: Implements an atomic persistence layer. Data is indexed by ISO-8601 keys, ensuring $O(1)$ lookup for note retrieval. It features a debounced persistence mechanism to `localStorage` to minimize I/O overhead.
 
-## Key Features & Requirements Coverage
+### 2. High-Performance Animation Pipeline
+To achieve a sustained 60fps while managing dozens of simultaneous background elements:
+- **Physics-Based Particles**: The `NatureParticles` system generates 60+ SVG fragments. Every fragment is rendered with `will-change: transform` to promote it to its own GPU layer, avoiding layout thrashing.
+- **JIT Keyframe Injection**: Utilizes Tailwind CSS 4's Just-In-Time engine for hardware-accelerated animations, specifically `translateY` and `rotate` transforms, which bypass the CPU's main thread.
+- **Bionic UI Scaling**: The "Breathing" effect is implemented via advanced CSS `scale` transforms, which are computationally inexpensive compared to width/height mutations.
 
-### 1. Wall Calendar Aesthetic
-- **Dynamic Hero Section**: Integrated with curated high-resolution photography that automatically updates color themes and textures based on the month.
-- **Glassmorphism**: Leveraged advanced backdrop filters and translucent layering to maintain depth without sacrificing clarity.
+### 3. Layout & Responsiveness Engineering
+- **Viewport-Locking Strategy**: The application employs a `h-screen overflow-hidden` strategy to mimic a native binary application. This required a strict flexbox/grid hierarchy where the `CalendarGrid` and `NotesPanel` handle their own internal overflow.
+- **Dynamic Geometric Masking**: The hero section utilizes `clip-path: polygon()` masks to create professional design-grade overlays without the weight of additional image assets.
 
-### 2. Intelligent Day Range Selector
-- **Multi-State Selection**: Includes distinct visual indicators for `Selection Start`, `Selection End`, and `In-Range Span`.
-- **Atomic Range Logic**: Implemented a custom selection algorithm that handles range crossing and multi-day spans with immediate visual synchronization.
+## Core Technical Requirements Coverage
 
-### 3. Integrated Notes & Memory JournalING
-- **Context-Aware Persistence**: Notes are automatically isolated by date or range. Saving a note for a specific range does not overwrite single-day entries.
-- **Explicit Save Workflow**: Introduced an explicit "Save & Plant" mechanism to give users a clear sense of completion, transitioning from a focus-editor to a "Saved Memory" view.
+- **Day Range Selector**: Implements a robust start/end interval selection system with distinct component states for `active`, `interval`, and `boundary` nodes.
+- **Wall Calendar Aesthetic**: Emulates physical verticality through a top-down anchor layout and a digital wire-binder implementation using repeating CSS fragments.
+- **Functional Note Integration**: Fully isolated note entries mapped to unique date or range identifiers.
 
-### 4. Fully Responsive Architecture
-- **Desktop Dashboard**: A multi-column, fit-to-screen grid designed for high-resolution monitors.
-- **Mobile Stack**: A fluid, vertically-stacked layout that prioritizes touch-friendly date selection and keyboard-optimized note editing.
+## Technology Stack
 
-## Creative Liberty: The "Living" Experience
-
-To exceed the baseline requirements, I implemented several advanced frontend features:
-- **Global Particle System**: Client-side drifting botanical elements that create a sense of environmental depth.
-- **Bionic Breathing UI**: CSS keyframe animations that pulse the primary containers, making the interface feel "alive."
-- **Indian Holiday Registry**: A built-in registry for national holidays with specialized visual markers.
-
-## Technical Implementation
-
-### Tech Stack
 - **Framework**: Next.js 16 (App Router)
-- **Styling**: Tailwind CSS 4 (Utilizing JIT-compiled keyframes)
-- **Icons**: Lucide React
-- **Date Management**: `date-fns` for robust ISO-8601 handling
-- **State Management**: Custom React Hooks (`useCalendar`, `useNotes`) for modular logic separation.
-- **Testing**: Integrated Vitest suite for core hook validation.
+- **Runtime**: React 19
+- **Styling Layer**: Tailwind CSS 4 (PostCSS 8+)
+- **Logic Utilities**: `date-fns` for robust ISO-8601 date manipulation
+- **Component Primitives**: Lucide React for consistent SVG rendering
 
-### Performance & Optimization
-- **Hardware Acceleration**: Used `will-change: transform` on all global particles to ensure 60fps performance.
-- **Viewport Locking**: The application uses a non-scrolling, fit-to-screen layout to mimic a native application experience.
+## Installation & Build
 
-## Getting Started
-
-### Installation
 ```bash
+# Install dependencies
 npm install
-```
 
-### Local Development
-```bash
+# Build for production (optimized output)
+npm run build
+
+# Direct local development
 npm run dev
 ```
 
-### Production Build
-```bash
-npm run build
-```
-
 ---
-*Developed with a focus on component modularity, technical clean-line CSS, and a premium user experience.*
+*Technical Assessment Submission: Focus on UI Engineering, State Management, and Performance Latency.*

@@ -50,13 +50,13 @@ body {
 
 @keyframes leaf-drift {
   0% {
-    transform: translate(-10vw, -10vh) rotate(0deg) scale(0.8);
+    transform: translateY(-20vh) rotate(0deg) translateX(0);
     opacity: 0;
   }
-  20% { opacity: 0.6; }
-  80% { opacity: 0.6; }
+  20% { opacity: 0.8; }
+  80% { opacity: 0.8; }
   100% {
-    transform: translate(110vw, 110vh) rotate(360deg) scale(1.2);
+    transform: translateY(120vh) rotate(540deg) translateX(15vw);
     opacity: 0;
   }
 }
