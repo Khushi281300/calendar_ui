@@ -2,10 +2,12 @@
 
 import React from 'react';
 import { useCalendar } from '@/hooks/useCalendar';
+import { useNotes } from '@/hooks/useNotes';
 import { CalendarGrid } from '@/components/calendar/CalendarGrid';
 
 export default function CalendarPage() {
   const calendarState = useCalendar();
+  const notesState = useNotes();
   return (
     <main className="min-h-screen bg-gray-50 flex items-center justify-center p-4 md:p-8 antialiased">
       <div className="w-full max-w-6xl bg-white rounded-3xl shadow-xl overflow-hidden min-h-[800px] border border-gray-100 grid grid-cols-1 md:grid-cols-[2fr_3fr] lg:grid-cols-[3fr_5fr]">
