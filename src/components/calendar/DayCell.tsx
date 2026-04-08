@@ -18,23 +18,40 @@ export function DayCell({ day, currentMonth, selectedStart, selectedEnd, onClick
   const isEnd = selectedEnd ? isSameDay(day, selectedEnd) : false;
   
   const inRange = selectedStart && selectedEnd 
-    ? isWithinInterval(day, { start: selectedStart, end: selectedEnd }) && !isStart && !isEnd
+    ? isWithinInterval(day, { 
+        start: selectedStart as Date, 
+        end: selectedEnd as Date 
+      })
     : false;
+
+  const isRangeStart = isStart && selectedEnd && !isSameDay(selectedStart as Date, selectedEnd as Date);
+  const isRangeEnd = isEnd && selectedStart && !isSameDay(selectedStart as Date, selectedEnd as Date);
 
   return (
     <div 
       onClick={onClick}
       className={cn(
-      "h-10 w-10 flex items-center justify-center rounded-full text-sm font-medium transition-colors cursor-pointer",
-      !isCurrentMonth && "text-gray-300",
-      isCurrentMonth && !isStart && !isEnd && !inRange && "text-gray-700 hover:bg-gray-100",
-      isCurrentDay && !isStart && !isEnd && !inRange && "bg-neutral-200 text-black",
-      
-      isStart && "bg-black text-white shadow-md",
-      isEnd && "bg-black text-white shadow-md",
-      inRange && "bg-black/5 text-black"
-    )}>
-      {format(day, 'd')}
+        "relative h-12 w-12 flex items-center justify-center text-sm font-medium transition-all duration-200 cursor-pointer select-none group",
+        !isCurrentMonth && "text-slate-300 opacity-50",
+        isCurrentMonth && "text-slate-600",
+        
+        // Base hover
+        isCurrentMonth && !isStart && !isEnd && "hover:bg-slate-100 rounded-xl",
+        
+        // In-range background (square/rectangle to connect cells)
+        inRange && !isStart && !isEnd && "bg-blue-50/80 text-blue-600",
+        
+        // Range start/end background connectors
+        isRangeStart && "after:absolute after:right-0 after:h-full after:w-1/2 after:bg-blue-50/80 after:-z-10",
+        isRangeEnd && "after:absolute after:left-0 after:h-full after:w-1/2 after:bg-blue-50/80 after:-z-10",
+        
+        // Selected circle
+        (isStart || isEnd) && "bg-blue-600 text-white rounded-xl shadow-[0_10px_20px_-5px_rgba(37,99,235,0.4)] z-10",
+        
+        // Today indicator
+        isCurrentDay && !isStart && !isEnd && "before:absolute before:bottom-2 before:w-1 before:h-1 before:bg-blue-600 before:rounded-full"
+      )}>
+      <span className="relative z-10">{format(day, 'd')}</span>
     </div>
   );
 }
