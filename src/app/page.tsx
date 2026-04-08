@@ -13,20 +13,41 @@ export default function CalendarPage() {
   const notesState = useNotes();
 
   return (
-    <main className="min-h-screen bg-emerald-50/20 relative flex items-center justify-center p-4 md:p-8 antialiased selection:bg-emerald-100 overflow-hidden">
+    <main className="h-screen w-screen bg-emerald-50/20 relative flex items-center justify-center p-4 md:p-6 lg:p-10 antialiased selection:bg-emerald-100 overflow-hidden">
       {/* 1. Global Living Background */}
       <div className="fixed inset-0 bg-gradient-to-br from-emerald-50 via-sage-100 to-lime-50 animate-mesh-flow z-0" />
       <NatureParticles />
 
-      {/* 2. Main Breathing Glass Card */}
-      <div className="w-full max-w-7xl bg-white/40 backdrop-blur-2xl rounded-[3.5rem] shadow-[0_40px_100px_-20px_rgba(16,185,129,0.1)] overflow-hidden min-h-[850px] border border-white/60 grid grid-cols-1 md:grid-cols-[1.5fr_2.5fr] lg:grid-cols-[1.8fr_3.2fr] relative z-10 animate-breathing">
+      {/* 2. Main Wall Calendar Card (Top-Bottom Split) */}
+      <div className="w-full h-full max-w-[1000px] max-h-[1200px] bg-white rounded-[1rem] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.2)] overflow-hidden border border-slate-200 flex flex-col relative z-10 animate-breathing group/calendar">
         
-        {/* Left Panel: Seasonal Hero Section */}
-        <HeroPanel currentMonth={calendarState.currentMonth} />
+        {/* Wire Binder Effect */}
+        <div className="absolute top-0 left-0 right-0 h-8 flex justify-center items-center gap-1 z-50 pointer-events-none opacity-40">
+           {Array.from({ length: 40 }).map((_, i) => (
+             <div key={i} className="w-1.5 h-6 bg-slate-300 rounded-full border-x border-slate-400" />
+           ))}
+        </div>
 
-      {/* Right Panel: Calendar & Notes */}
-        <section className="p-6 md:p-10 flex flex-col flex-1 h-full">
-          <div className="flex-1">
+        {/* Top Section: Hero Image (Anchor) */}
+        <div className="h-[45%] w-full relative shrink-0 border-b border-slate-100">
+          <HeroPanel currentMonth={calendarState.currentMonth} />
+        </div>
+
+        {/* Bottom Section: Split Content */}
+        <section className="flex-1 flex flex-col md:flex-row overflow-hidden">
+          {/* Left: Notes Panel (Lined Notepad style) */}
+          <div className="w-full md:w-[35%] h-full border-b md:border-b-0 md:border-r border-slate-100 p-6 shrink-0 md:shrink">
+             <NotesPanel 
+                selectedStart={calendarState.selectedStart}
+                selectedEnd={calendarState.selectedEnd}
+                getNote={notesState.getNote}
+                saveNote={notesState.saveNote}
+                onClearSelection={calendarState.clearSelection}
+             />
+          </div>
+
+          {/* Right: Calendar Grid */}
+          <div className="flex-1 h-full p-6 overflow-y-auto scrollbar-hide">
              <CalendarGrid 
                currentMonth={calendarState.currentMonth} 
                selectedStart={calendarState.selectedStart}
@@ -37,16 +58,6 @@ export default function CalendarPage() {
                onGoToToday={calendarState.goToToday}
                onSetMonth={calendarState.setMonth}
                onSetYear={calendarState.setYear}
-             />
-          </div>
-          
-          <div className="mt-8 h-[350px]">
-             <NotesPanel 
-                selectedStart={calendarState.selectedStart}
-                selectedEnd={calendarState.selectedEnd}
-                getNote={notesState.getNote}
-                saveNote={notesState.saveNote}
-                onClearSelection={calendarState.clearSelection}
              />
           </div>
         </section>
