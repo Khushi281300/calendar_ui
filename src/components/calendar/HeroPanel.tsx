@@ -13,7 +13,7 @@ export function HeroPanel({ currentMonth }: HeroPanelProps) {
   const monthName = format(currentMonth, 'MMMM');
   const yearName = format(currentMonth, 'yyyy');
   
-  const curatedImages: Record<number, string> = {
+  const images: Record<number, string> = {
     0: '1519681393784-d120267933ba', 1: '1483921020237-2ff51e8e4b22', 
     2: '1462270622445-5b17ccd7dae3', 3: '1522748906645-95d8adfd52c7',
     4: '1470770841072-f978cf4d019e', 5: '1507525428034-b723cf961d3e',
@@ -22,7 +22,7 @@ export function HeroPanel({ currentMonth }: HeroPanelProps) {
     10: '1486406146926-c627a92ad1ab', 11: '1507151226894-49f394547ce4'
   };
   
-  const photoId = curatedImages[monthIndex] || curatedImages[0];
+  const photoId = images[monthIndex] || images[0];
 
   return (
     <section className="relative h-[350px] md:h-auto overflow-hidden group border-r border-emerald-50">

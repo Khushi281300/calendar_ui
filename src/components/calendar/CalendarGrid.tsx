@@ -1,7 +1,7 @@
-import { startOfMonth, endOfMonth, startOfWeek, endOfWeek, eachDayOfInterval } from 'date-fns';
+import { startOfMonth, endOfMonth, startOfWeek, endOfWeek, eachDayOfInterval, format } from 'date-fns';
 import { DayCell } from './DayCell';
 import { getHoliday } from '@/lib/holidays';
-import { ChevronLeft, ChevronRight, ChevronDown, Sparkles } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ChevronDown, Flower } from 'lucide-react';
 import React, { useState } from 'react';
 
 const WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -50,11 +50,9 @@ export function CalendarGrid({
       key={currentMonth.toISOString()} 
       className="w-full animate-month-change"
     >
-      {/* Animated Nature Glass Header */}
       <div className="relative z-50 mb-12 px-2">
         <div className="bg-emerald-50/20 backdrop-blur-3xl border border-white/40 p-8 rounded-[4rem] shadow-[0_20px_50px_-12px_rgba(16,185,129,0.1)] flex flex-col sm:flex-row justify-between items-center gap-8 animate-breathing">
           <div className="flex items-center gap-6">
-            {/* Custom Nature Month Picker */}
             <div className="relative">
               <button 
                 onClick={() => { setShowMonthPicker(!showMonthPicker); setShowYearPicker(false); }}
@@ -70,7 +68,7 @@ export function CalendarGrid({
                     <button
                       key={month}
                       onClick={() => { onSetMonth(idx); setShowMonthPicker(false); }}
-                      className={`px-4 py-3 rounded-2xl text-[13px] font-black transition-all ${currentMonth.getMonth() === idx ? 'bg-rose-400/80 text-white shadow-lg shadow-rose-200' : 'hover:bg-rose-50/50 text-rose-400'}`}
+                      className={`px-4 py-3 rounded-2xl text-[13px] font-black transition-all ${currentMonth.getMonth() === idx ? 'bg-emerald-400 text-white shadow-lg shadow-emerald-200' : 'hover:bg-emerald-50/50 text-emerald-600'}`}
                     >
                       {month.substring(0, 3)}
                     </button>
@@ -79,14 +77,13 @@ export function CalendarGrid({
               )}
             </div>
 
-            {/* Custom Kawaii Year Picker */}
             <div className="relative">
               <button 
                 onClick={() => { setShowYearPicker(!showYearPicker); setShowMonthPicker(false); }}
-                className="flex items-center gap-2 text-4xl font-black text-orange-200 tracking-tight hover:text-orange-300 transition-all group"
+                className="flex items-center gap-2 text-4xl font-black text-emerald-200 tracking-tight hover:text-emerald-300 transition-all group"
               >
                 {currentMonth.getFullYear()}
-                <ChevronDown className={`w-6 h-6 text-orange-100 group-hover:text-orange-200 transition-transform ${showYearPicker ? 'rotate-180' : ''}`} />
+                <ChevronDown className={`w-6 h-6 text-emerald-100 group-hover:text-emerald-200 transition-transform ${showYearPicker ? 'rotate-180' : ''}`} />
               </button>
 
               {showYearPicker && (
@@ -95,7 +92,7 @@ export function CalendarGrid({
                     <button
                       key={year}
                       onClick={() => { onSetYear(year); setShowYearPicker(false); }}
-                      className={`w-full px-4 py-3 rounded-2xl text-[13px] font-black transition-all mb-1 ${currentMonth.getFullYear() === year ? 'bg-orange-300/80 text-white shadow-lg shadow-orange-100' : 'hover:bg-orange-50/50 text-orange-300'}`}
+                      className={`w-full px-4 py-3 rounded-2xl text-[13px] font-black transition-all mb-1 ${currentMonth.getFullYear() === year ? 'bg-emerald-300 text-white shadow-lg' : 'hover:bg-emerald-50/50 text-emerald-300'}`}
                     >
                       {year}
                     </button>
@@ -108,23 +105,23 @@ export function CalendarGrid({
           <div className="flex items-center gap-4 bg-white/10 backdrop-blur-md p-2 rounded-full border border-white/20 shadow-inner">
              <button 
                onClick={onGoToToday}
-               className="flex items-center gap-2 px-8 py-3.5 rounded-full text-[12px] font-black tracking-widest text-white bg-rose-400/80 shadow-[0_12px_24px_-8px_rgba(244,114,182,0.3)] hover:scale-105 active:scale-95 transition-all"
+               className="flex items-center gap-2 px-8 py-3.5 rounded-full text-[12px] font-black tracking-widest text-white bg-emerald-500 shadow-[0_12px_24px_-8px_rgba(16,185,129,0.3)] hover:scale-105 active:scale-95 transition-all group"
              >
-               <Sparkles className="w-4 h-4 fill-white/20" />
+               <Flower className="w-4 h-4 text-emerald-200 group-hover:rotate-12 transition-transform" />
                TODAY
              </button>
              
              <div className="flex gap-2">
                <button 
                  onClick={onPrevMonth}
-                 className="p-3.5 rounded-full bg-white/40 hover:bg-rose-50/50 text-rose-300 hover:text-rose-500 transition-all shadow-sm active:scale-90"
+                 className="p-3.5 rounded-full bg-white/40 hover:bg-emerald-50/50 text-emerald-300 hover:text-emerald-600 transition-all shadow-sm active:scale-90"
                  aria-label="Previous Month"
                >
                  <ChevronLeft className="w-6 h-6" />
                </button>
                <button 
                  onClick={onNextMonth}
-                 className="p-3.5 rounded-full bg-white/40 hover:bg-rose-50/50 text-rose-300 hover:text-rose-500 transition-all shadow-sm active:scale-90"
+                 className="p-3.5 rounded-full bg-white/40 hover:bg-emerald-50/50 text-emerald-300 hover:text-emerald-600 transition-all shadow-sm active:scale-90"
                  aria-label="Next Month"
                >
                  <ChevronRight className="w-6 h-6" />
@@ -134,7 +131,6 @@ export function CalendarGrid({
         </div>
       </div>
 
-      {/* Weekday headers */}
       <div 
         role="row" 
         className="grid grid-cols-7 mb-8 px-2"
@@ -144,14 +140,13 @@ export function CalendarGrid({
             key={day} 
             role="columnheader" 
             aria-label={day}
-            className="text-center text-[11px] font-bold uppercase tracking-[0.15em] text-slate-400/80"
+            className="text-center text-[11px] font-bold uppercase tracking-[0.15em] text-emerald-400/60"
           >
             {day.substring(0, 3)}
           </div>
         ))}
       </div>
 
-      {/* Calendar Grid */}
       <div 
         role="row" 
         className="grid grid-cols-7 gap-y-3 gap-x-1 place-items-center"

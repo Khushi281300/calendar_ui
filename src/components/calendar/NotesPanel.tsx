@@ -26,12 +26,11 @@ export function NotesPanel({ selectedStart, selectedEnd, getNote, saveNote, onCl
       : format(selectedStart, 'yyyy-MM-dd')
   ) : null;
 
-  // Sync content with store when the selection context changes
   useEffect(() => {
     if (dateKey !== lastKeyRef.current) {
-      const savedNote = dateKey ? getNote(dateKey) : '';
-      setContent(savedNote);
-      setIsEditing(!savedNote); 
+      const saved = dateKey ? getNote(dateKey) : '';
+      setContent(saved);
+      setIsEditing(!saved); 
       lastKeyRef.current = dateKey;
     }
   }, [dateKey, getNote]);
@@ -53,7 +52,6 @@ export function NotesPanel({ selectedStart, selectedEnd, getNote, saveNote, onCl
 
   return (
     <div className="h-full flex flex-col group/notes overflow-hidden">
-      {/* 1. Compact Header (Better Fit) */}
       <div className="flex items-center justify-between mb-4 bg-emerald-50/20 backdrop-blur-3xl p-4 rounded-[2rem] border border-white/40 shadow-sm relative overflow-hidden h-16 shrink-0">
         <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-20 h-5 bg-emerald-200/20 backdrop-blur-sm -rotate-1 border-x border-dashed border-emerald-300 opacity-40 z-30" />
         
@@ -108,14 +106,13 @@ export function NotesPanel({ selectedStart, selectedEnd, getNote, saveNote, onCl
         </div>
       </div>
 
-      {/* 2. Content Area (Scaled Down) */}
       <div className="flex-1 relative min-h-0 overflow-hidden">
         {!selectedStart ? (
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-emerald-50/10 backdrop-blur-3xl rounded-[2.5rem] border border-dashed border-emerald-200/50 p-6 text-center shadow-[inset_0_0_30px_rgba(16,185,129,0.05)] overflow-hidden">
             <div className="w-12 h-12 bg-white/40 backdrop-blur-3xl rounded-full shadow-lg flex items-center justify-center mb-4 border border-white/60 animate-breathing">
                <Leaf className="w-6 h-6 text-emerald-500" />
             </div>
-            <h4 className="text-lg font-black text-emerald-900 tracking-tight mb-1">THE RIVER FLOWS</h4>
+            <h4 className="text-lg font-black text-emerald-800 tracking-tight mb-1">THE RIVER FLOWS</h4>
             <p className="text-[10px] text-emerald-600/70 max-w-[200px] leading-relaxed font-black uppercase tracking-[0.15em] mb-3">
               Plant a memory below
             </p>
@@ -130,11 +127,10 @@ export function NotesPanel({ selectedStart, selectedEnd, getNote, saveNote, onCl
               value={content}
               onChange={handleChange}
               placeholder={isRange 
-                ? "Look deep into nature...  🍃" 
-                : "In all things of nature...  🌼"}
+                ? "Look deep into nature, and then you will understand everything better. - Albert Einstein 🍃" 
+                : "In all things of nature there is something of the marvelous. - Aristotle 🌼"}
               className="w-full h-full resize-none border-none p-3 text-emerald-900 leading-relaxed placeholder:text-emerald-300 placeholder:italic focus:ring-0 text-base font-black scrollbar-hide bg-transparent relative z-10"
             />
-            {/* Standardized Bottom Save Button */}
             <div className="absolute bottom-4 right-5 z-20 flex items-center gap-3">
               {isSaving && (
                 <span className="text-[9px] font-black text-emerald-500 animate-pulse uppercase tracking-[0.1em]">Planting...</span>
