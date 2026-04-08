@@ -39,11 +39,11 @@ export function HeroPanel({ currentMonth }: HeroPanelProps) {
       <div className="absolute -bottom-1 -left-1 -right-1 h-32 bg-white/20 backdrop-blur-md" style={{ clipPath: 'polygon(0 40%, 100% 0, 100% 100%, 0% 100%)' }} />
       <div className="absolute -bottom-1 -left-1 -right-1 h-44 bg-emerald-500/30 backdrop-blur-sm" style={{ clipPath: 'polygon(0 100%, 100% 20%, 100% 100%, 0% 100%)' }} />
 
-      <div className="absolute bottom-12 right-12 text-right z-20">
-        <div className="text-emerald-100/80 font-black text-2xl tracking-[0.3em] mb-2 drop-shadow-lg uppercase">
+      <div className="absolute bottom-6 right-6 md:bottom-12 md:right-12 text-right z-20">
+        <div className="text-emerald-100/80 font-black text-sm md:text-2xl tracking-[0.3em] mb-1 md:mb-2 drop-shadow-lg uppercase">
           {yearName}
         </div>
-        <h1 className="text-7xl font-black text-white tracking-tighter drop-shadow-2xl uppercase">
+        <h1 className="text-4xl md:text-7xl font-black text-white tracking-tighter drop-shadow-2xl uppercase">
           {monthName}
         </h1>
       </div>
