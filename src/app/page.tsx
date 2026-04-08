@@ -34,9 +34,9 @@ export default function CalendarPage() {
         </div>
 
         {/* Bottom Section: Split Content */}
-        <section className="flex-1 flex flex-col md:flex-row-reverse min-h-0 overflow-visible md:overflow-hidden">
-          {/* Right: Calendar Grid (First in mobile, Right on desktop) */}
-          <div className="flex-1 h-auto md:h-full p-4 md:p-6 overflow-visible md:overflow-y-auto scrollbar-hide border-b md:border-b-0 border-slate-100">
+        <section className="flex-1 flex flex-col md:flex-row min-h-0 overflow-visible md:overflow-hidden">
+          {/* Top on Mobile, Right on Desktop */}
+          <div className="order-1 md:order-2 flex-1 h-auto md:h-full p-4 md:p-6 overflow-visible md:overflow-y-auto scrollbar-hide border-b md:border-b-0 border-slate-100">
              <CalendarGrid 
                currentMonth={calendarState.currentMonth} 
                selectedStart={calendarState.selectedStart}
@@ -50,8 +50,8 @@ export default function CalendarPage() {
              />
           </div>
 
-          {/* Left: Notes Panel (Second in mobile, Left on desktop) */}
-          <div className="w-full md:w-[35%] h-auto md:h-full md:border-r border-slate-100 p-4 md:p-6 shrink-0 md:shrink">
+          {/* Bottom on Mobile, Left on Desktop */}
+          <div className="order-2 md:order-1 w-full md:w-[35%] h-auto md:h-full md:border-r border-slate-100 p-4 md:p-6 shrink-0 md:shrink">
              <NotesPanel 
                 selectedStart={calendarState.selectedStart}
                 selectedEnd={calendarState.selectedEnd}
